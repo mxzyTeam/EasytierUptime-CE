@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://files.a2942.top:5904/favicon.ico">
+    <title>节点管理列表</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-server"></i> 节点管理列表
+        </h1>
+        <div style="font-size: 13px; color: #666; display: flex; align-items: center;">
+            <i class="fas fa-clock" style="color: #409eff; margin-right: 6px;"></i>
+            最后更新：<span id="data-update-time" style="color: #333; font-weight: 500;">加载中...</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="搜索节点名称/标签/ID">
+            <button class="search-btn">
+                <i class="fas fa-search"></i> 搜索
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="node-table">
+            <thead>
+                <tr class="table-header">
+                    <th>节点名称</th>
+                    <th>状态</th>
+                    <th>负载情况</th>
+                    <th>标签</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody id="node-list-body">
+                <!-- 加载状态 -->
+                <tr>
+                    <td colspan="5" class="loading">
+                        <i class="fas fa-spinner"></i> 加载中...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 分页控件（新增） -->
+    <div class="pagination" id="pagination">
+        <!-- 动态渲染分页按钮 -->
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+
+</html>
