@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "Inter", sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    padding: 20px;
+}
+
+.page-header {
+    max-width: 1400px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+}
+
+.page-title i {
+    color: #409eff;
+    margin-right: 10px;
+    font-size: 28px;
+}
+
+.refresh-btn {
+    padding: 8px 16px;
+    background-color: #409eff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.refresh-btn i {
+    margin-right: 6px;
+}
+
+.refresh-btn:hover {
+    background-color: #3086d6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-title-left {
+    display: flex;
+    align-items: center;
+}
+
+.card-title i {
+    display: inline-block;
+    width: 4px;
+    height: 20px;
+    background-color: #409eff;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.card-actions {
+    font-size: 12px;
+}
+
+.card-actions select,
+.card-actions button {
+    padding: 4px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+}
+
+/* 状态标签 */
+.status-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.status-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.status-tag i {
+    margin-right: 4px;
+    font-size: 10px;
+}
+
+.tag-success {
+    background-color: #e6fffa;
+    color: #38b2ac;
+}
+
+.tag-warning {
+    background-color: #fffaf0;
+    color: #ed8936;
+}
+
+.tag-danger {
+    background-color: #fee2e2;
+    color: #e53e3e;
+}
+
+.tag-info {
+    background-color: #e0f2fe;
+    color: #4299e1;
+}
+
+/* 指标卡片 */
+.metrics-card {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.metric-item {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e6f4ff 100%);
+    border-radius: 6px;
+    position: relative;
+}
+
+.metric-item.warning {
+    border: 2px solid #ff4d4f;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.metric-label i {
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.metric-unit {
+    font-size: 12px;
+    color: #888;
+    margin-left: 4px;
+}
+
+.metric-value.warning {
+    color: #ff4d4f;
+}
+
+/* 统计卡片 */
+.stats-card {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-item {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #718096;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+/* 图表容器 */
+#trend-chart,
+#connection-chart,
+#health-rate-chart {
+    width: 100%;
+    height: 350px;
+}
+
+/* 信息卡片 */
+.info-card {
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 14px;
+    color: #333;
+    word-break: break-all;
+}
+
+/* 加载状态 */
+.loading-container {
+    grid-column: 1 / 4;
+    text-align: center;
+    padding: 100px;
+    color: #666;
+}
+
+.loading-container i {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+    animation: spin 1.5s linear infinite;
+}
+
+/* 响应式 */
+@media (max-width: 1210px) {
+    .page-header {
+        flex-wrap: wrap;
+    }
+
+    .container {
+        grid-template-columns: none;
+        grid-template-rows: none;
+        gap: none;
+        display: inline-block;
+    }
+
+    .container>* {
+        margin: 10px 0px;
+    }
+
+    .metrics-card,
+    .info-card,
+    .stats-card {
+        grid-template-columns: repeat(1, 1fr);
+        grid-column: 1 / 3;
+    }
+}
