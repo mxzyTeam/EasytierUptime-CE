@@ -13,17 +13,21 @@
 
 <body>
     <div class="page-header">
-        <h1 class="page-title">
-            <i class="fas fa-server"></i>
-            <span id="node-name">节点详细信息</span>
-        </h1>
-        <div style="font-size: 13px; color: #666; display: flex; align-items: center;">
-            <i class="fas fa-clock" style="color: #409eff; margin-right: 6px;"></i>
-            最后更新：<span id="detail-update-time" style="color: #333; font-weight: 500;">加载中...</span>
+        <div>
+            <h1 class="page-title">
+                <i class="fas fa-server"></i>
+                <span id="node-name">节点详细信息</span>
+            </h1>
         </div>
-        <button class="refresh-btn" id="refresh-btn">
-            <i class="fas fa-sync-alt"></i> 刷新数据
-        </button>
+        <div class="header-info">
+            <div class="update-time">
+                <i class="fas fa-clock"></i>
+                最后更新：<span id="detail-update-time">加载中...</span>
+            </div>
+            <button class="refresh-btn" id="refresh-btn">
+                <i class="fas fa-sync-alt"></i> 刷新数据
+            </button>
+        </div>
     </div>
 
     <div class="container" id="detail-container">
