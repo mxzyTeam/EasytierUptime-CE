@@ -19,7 +19,7 @@ function getNodeId() {
 function fetchNodeDetail(nodeId) {
     const container = document.getElementById('detail-container');
 
-    fetch(`api/get-node-detail.php?id=${nodeId}`)
+    fetch(`api/node.php?id=${nodeId}`)
         .then(res => {
             if (!res.ok) throw new Error('网络请求失败');
             return res.json();
@@ -56,7 +56,8 @@ function renderNodeDetail() {
         is_active, is_approved, ring_granularity, tags, allow_relay, host, port,
         qq_number, wechat, mail, current_connections, max_connections,
         usage_percentage, last_response_time, health_percentage_24h,
-        health_record_total_counter_ring, current_health_status
+        health_record_total_counter_ring, current_health_status,
+        description
     } = serverData;
 
     // 计算时间粒度（秒转分钟）
@@ -65,6 +66,8 @@ function renderNodeDetail() {
     const contactText = qq_number || wechat || mail || '无';
     // 主机地址/端口
     const hostPortText = `${host || '-'}` / `${port || '-'}`;
+    // 描述信息
+    const descriptionText = description || '暂无描述';
 
     // 渲染页面结构
     const container = document.getElementById('detail-container');
@@ -205,10 +208,14 @@ function renderNodeDetail() {
                     <div class="info-item">
                         <div class="info-label">主机地址/端口</div>
                         <div class="info-value">${(host && port) ? `${host}:${port}` : '无'}</div>
-                        </div>
+                    </div>
                     <div class="info-item">
                         <div class="info-label">联系方式</div>
                         <div class="info-value">${contactText}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">描述</div>
+                        <div class="info-value">${descriptionText}</div>
                     </div>
                 </div>
             `;
