@@ -111,18 +111,21 @@ try {
         $node['current_connections'] = (int)$node['current_connections'];
         $node['max_connections'] = (int)$node['max_connections'];
 
-        if ($node['is_active'] == 0) {
-            $node['load_level'] = 'none';
-            $node['load_text'] = '--';
+        if ($node['usage_percentage'] > 150) {
+            $node['load_level'] = 'high';
+            $node['load_text'] = "极高负载(" . number_format($node['usage_percentage'], 1) . "%)";
         } elseif ($node['usage_percentage'] > 100) {
             $node['load_level'] = 'high';
             $node['load_text'] = "高负载(" . number_format($node['usage_percentage'], 1) . "%)";
-        } elseif ($node['usage_percentage'] > 50) {
+        } elseif ($node['usage_percentage'] > 85) {
             $node['load_level'] = 'medium';
             $node['load_text'] = "中负载(" . number_format($node['usage_percentage'], 1) . "%)";
         } else {
             $node['load_level'] = 'low';
             $node['load_text'] = "低负载(" . number_format($node['usage_percentage'], 1) . "%)";
+        }
+        if ($node['is_active'] == 0) {
+            $node['load_text'] = '离线 '.$node['load_text'];
         }
 
         unset($node['rn']);

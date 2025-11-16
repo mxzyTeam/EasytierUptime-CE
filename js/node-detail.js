@@ -76,18 +76,18 @@ function renderNodeDetail() {
                             <i class="fas ${current_health_status === 'healthy' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> 
                             健康状态：${current_health_status === 'healthy' ? '正常' : '异常'}
                         </div>
-                        <div class="status-tag ${usage_percentage > 100 ? 'tag-danger' : 'tag-warning'}">
-                            <i class="fas fa-exclamation-circle"></i> 连接状态：${usage_percentage > 100 ? '过载' : '正常'}（${current_connections}/${max_connections}）
+                        <div class="status-tag ${usage_percentage > 100 ? 'tag-danger' : usage_percentage > 85 ? 'tag-warning' : 'tag-success'}">
+                            <i class="fas fa-users"></i> 连接状态：${usage_percentage > 100 ? '过载' : usage_percentage > 85 ? '注意' :'正常'}（${current_connections}/${max_connections}）
                         </div>
-                        <div class="status-tag ${last_response_time > 5000000 ? 'tag-danger' : 'tag-success'}">
+                        <div class="status-tag ${last_response_time > 5000000 ? 'tag-danger' : last_response_time > 100 ? 'tag-success' : 'tag-warning'}">
                             <i class="fas ${last_response_time > 5000000 ? 'fa-clock' : 'fa-tachometer-alt'}"></i> 
-                            响应状态：${last_response_time > 5000000 ? '缓慢' : '正常'}（${formatResponseTime(last_response_time)}）
+                            响应状态：${last_response_time > 5000000 ? '缓慢' : last_response_time > 100 ? '正常' :'这对吗？'}（${formatResponseTime(last_response_time)}）
                         </div>
                         <div class="status-tag tag-info">
                             <i class="fas fa-calendar-alt"></i> 最后更新：${updated_at}
                         </div>
                         <div class="status-tag ${is_approved ? 'tag-success' : 'tag-warning'}">
-                            <i class="fas fa-verified"></i> 审核状态：${is_approved ? '已通过' : '未通过'}
+                            <i class="fas fa-bullseye"></i> 审核状态：${is_approved ? '已通过' : '未通过'}
                         </div>
                     </div>
                 </div>
