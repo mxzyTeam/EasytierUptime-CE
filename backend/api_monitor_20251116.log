@@ -1,0 +1,141 @@
+2025-11-16 22:32:31,260 - INFO - ===== 开始执行任务: 2025-11-16 22:32:31 =====
+2025-11-16 22:32:31,260 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:32:31,476 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:32:31,476 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:32:31,476 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:32:31,592 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:32:36,969 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:29,815 - INFO - ===== 开始执行任务: 2025-11-16 22:33:29 =====
+2025-11-16 22:33:29,816 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:29,986 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:33:29,986 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:33:29,987 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:30,178 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:35,364 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:40,571 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:33:40,572 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:37:34,045 - INFO - ===== 开始执行任务: 2025-11-16 22:37:34 =====
+2025-11-16 22:37:34,046 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:37:34,158 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:37:34,158 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:37:34,158 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:37:34,291 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:02,511 - INFO - ===== 开始执行任务: 2025-11-16 22:39:02 =====
+2025-11-16 22:39:02,511 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:02,685 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:39:02,686 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:39:02,686 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:02,836 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:08,031 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:13,229 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:13,229 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:39:56,557 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:40:57,136 - INFO - ===== 开始执行任务: 2025-11-16 22:40:57 =====
+2025-11-16 22:40:57,137 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:40:57,301 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:40:57,302 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:40:57,302 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:40:57,435 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:41:02,641 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:41:07,842 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:41:07,843 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:41:50,196 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:45,315 - INFO - ===== 开始执行任务: 2025-11-16 22:51:45 =====
+2025-11-16 22:51:45,316 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:45,550 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 22:51:45,551 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 22:51:45,551 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:45,663 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:50,975 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:56,157 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:51:56,158 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:52:38,819 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:53:26,904 - WARNING - 备用API请求失败，第2次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 22:55:33,916 - ERROR - 备用API所有重试均失败: 请求超时 (120s)
+2025-11-16 22:55:33,916 - ERROR - 所有API端点均失败，无法获取数据
+2025-11-16 22:55:33,917 - ERROR - 接口返回错误: 未知错误
+2025-11-16 22:55:33,917 - INFO - 定时任务已启动，每30分钟执行一次...
+2025-11-16 22:55:33,918 - INFO - 主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 22:55:33,918 - INFO - 备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000 (仅在主API失败时使用)
+2025-11-16 23:21:27,657 - INFO - ===== 开始执行任务: 2025-11-16 23:21:27 =====
+2025-11-16 23:21:27,657 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:21:27,887 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:21:27,888 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:21:27,888 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:21:28,032 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:21:33,190 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:21:38,363 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:21:38,363 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:22:21,737 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:25,705 - INFO - ===== 开始执行任务: 2025-11-16 23:23:25 =====
+2025-11-16 23:23:25,705 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:25,860 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:23:25,861 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:23:25,861 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:26,004 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:31,186 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:36,379 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:23:36,379 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:24:18,745 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:25:05,908 - WARNING - 备用API请求失败，第2次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:26:06,062 - ERROR - 备用API所有重试均失败: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:26:06,062 - ERROR - 所有API端点均失败，无法获取数据
+2025-11-16 23:26:06,064 - ERROR - 接口返回错误: 未知错误
+2025-11-16 23:26:06,065 - INFO - 定时任务已启动，每30分钟执行一次...
+2025-11-16 23:26:06,065 - INFO - 主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:26:06,065 - INFO - 备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000 (仅在主API失败时使用)
+2025-11-16 23:28:03,796 - INFO - ===== 开始执行任务: 2025-11-16 23:28:03 =====
+2025-11-16 23:28:03,796 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:28:03,947 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:28:03,948 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:28:03,948 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:28:04,072 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:28:09,363 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:28:14,572 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:28:14,573 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:29:08,454 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:31:15,613 - WARNING - 备用API请求超时，第2次重试
+2025-11-16 23:32:08,540 - ERROR - 备用API所有重试均失败: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:32:08,541 - ERROR - 所有API端点均失败，无法获取数据
+2025-11-16 23:32:08,542 - ERROR - 接口返回错误: 未知错误
+2025-11-16 23:32:08,543 - INFO - 定时任务已启动，每30分钟执行一次...
+2025-11-16 23:32:08,543 - INFO - 主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:32:08,544 - INFO - 备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000 (仅在主API失败时使用)
+2025-11-16 23:41:57,249 - INFO - ===== 开始执行任务: 2025-11-16 23:41:57 =====
+2025-11-16 23:41:57,249 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:41:57,524 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:41:57,525 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:41:57,525 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:41:57,623 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:42:02,839 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:42:08,013 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:42:08,013 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:42:53,507 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:27,260 - INFO - ===== 开始执行任务: 2025-11-16 23:45:27 =====
+2025-11-16 23:45:27,260 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:28,537 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:45:28,538 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:45:28,538 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:28,738 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:33,891 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:39,088 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:45:39,089 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:37,124 - INFO - ===== 开始执行任务: 2025-11-16 23:46:37 =====
+2025-11-16 23:46:37,124 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:37,274 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:46:37,274 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:46:37,274 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:37,400 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:42,578 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:47,739 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:46:47,740 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:36,411 - INFO - ===== 开始执行任务: 2025-11-16 23:47:36 =====
+2025-11-16 23:47:36,412 - INFO - 健康检查：只检查主API https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:36,568 - WARNING - 健康检查失败: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000 - 状态码: 502
+2025-11-16 23:47:36,569 - WARNING - 主API不健康，将在数据获取时尝试备用API
+2025-11-16 23:47:36,569 - INFO - 优先尝试主API: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:36,695 - WARNING - 主API请求失败，第1次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:41,889 - WARNING - 主API请求失败，第2次重试: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:47,187 - ERROR - 主API所有重试均失败: 502 Server Error: Bad Gateway for url: https://uptime.easytier.cn/api/nodes?page=1&per_page=1000
+2025-11-16 23:47:47,188 - INFO - 主API不可用，直接尝试备用API: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
+2025-11-16 23:48:10,602 - WARNING - 备用API请求失败，第1次重试: 500 Server Error: Internal Server Error for url: https://uptime.lisfox.top/api/nodes?page=1&per_page=1000
