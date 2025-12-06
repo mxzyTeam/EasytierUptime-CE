@@ -1,0 +1,96 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>节点详情 - EasyTier Uptime</title>
+  <style>
+    :root { --primary:#6c5ce7; --accent:#00cec9; --text:#2d3436; --text-light:#636e72; --shadow:0 8px 32px rgba(108, 92, 231, 0.1); --radius:14px; --blur: blur(10px); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Segoe UI,system-ui,-apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,sans-serif;background:linear-gradient(135deg,#f5f7ff 0%,#f0f2ff 100%);color:var(--text);min-height:100vh}
+    .container{max-width:1100px;margin:0 auto;padding:16px}
+    header{position:sticky;top:0;background:rgba(255,255,255,.25);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid rgba(255,255,255,.3);box-shadow:var(--shadow);z-index:10}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    h1{font-size:1.5rem;color:var(--primary)}
+    a.link{color:var(--primary);text-decoration:none;padding:6px 10px;border-radius:8px}
+    a.link:hover{text-decoration:underline}
+    .card{background:rgba(255,255,255,.8);border:1px solid rgba(108,92,231,.15);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin:16px 0}
+
+    /* 头部信息 */
+    .detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .detail-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .detail-title .name{font-size:1.25rem;font-weight:700;color:var(--primary)}
+    .subtitle{font-size:.9rem;color:var(--text-light)}
+
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.8rem}
+    .status-healthy{background:linear-gradient(135deg,#10b981,#34d399);color:#fff}
+    .status-unhealthy{background:linear-gradient(135deg,#ef4444,#f87171);color:#fff}
+    .status-unknown{background:linear-gradient(135deg,#64748b,#94a3b8);color:#fff}
+
+    /* 关键信息网格 */
+    .kv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+    .kv-item{background:rgba(255,255,255,.8);border:1px solid rgba(108,92,231,.12);border-radius:12px;padding:12px}
+    .kv-item .label{font-size:.8rem;color:var(--text-light);margin-bottom:4px}
+    .kv-item .value{font-weight:600}
+
+    /* 进度条 */
+    .progress{height:8px;background:rgba(108,92,231,.12);border-radius:999px;overflow:hidden}
+    .progress>.bar{height:100%;background:linear-gradient(135deg,#6c5ce7,#7e6ff0)}
+
+    /* 标签 */
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .chip{padding:4px 10px;border-radius:999px;background:rgba(108,92,231,.1);color:#6c5ce7;font-size:.8rem}
+
+    /* 描述 */
+    .desc{margin-top:12px;color:var(--text)}
+    .muted{color:var(--text-light)}
+
+    /* KPI/表格样式复用 */
+    .kpis{display:flex;gap:12px;flex-wrap:wrap}
+    .kpi{flex:1;min-width:160px;background:rgba(255,255,255,.8);border:1px solid rgba(108,92,231,.12);border-radius:12px;text-align:center;padding:12px}
+    .small{font-size:.85rem;color:var(--text-light)}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th,td{padding:10px;border-bottom:1px solid rgba(108,92,231,.12);text-align:left}
+
+    .btn{padding:6px 10px;border-radius:999px;border:1px solid rgba(108,92,231,.35);background:rgba(255,255,255,.9);color:var(--primary);cursor:pointer}
+    .btn:hover{background:var(--primary);color:#fff}
+    .btn-sm{padding:4px 8px;font-size:.8rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container toolbar">
+      <h1>节点详情</h1>
+      <div>
+        <a class="link" href="/">返回首页</a>
+        <a class="link" href="/admin/">后台</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" id="card-basic">
+      <div class="detail-head" id="detail-head"></div>
+      <div class="kv-grid" id="kv"></div>
+      <div class="chips" id="tags"></div>
+      <div class="desc" id="desc"></div>
+    </section>
+
+    <section class="card">
+      <div class="kpis" id="stats"></div>
+    </section>
+
+    <section class="card">
+      <h3 style="margin:0 0 8px">近24小时记录</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>时间</th><th>状态</th><th>连接数</th><th>响应(ms)</th><th>错误</th></tr></thead>
+          <tbody id="records"><tr><td colspan="5" class="muted">加载中...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/node.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录/注册 - EasyTier Uptime</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    :root {
+      /* 色彩系统 */
+      --primary: #6c5ce7;
+      --primary-light: #7e6ff0;
+      --primary-dark: #5a4bd4;
+      --accent: #00cec9;
+      --accent-hover: #00e5df;
+      --accent-dark: #00b5b0;
+      --neutral-dark: #2d3436;
+      --neutral: #636e72;
+      --neutral-light: #b2bec3;
+      --background: linear-gradient(135deg, #f5f7ff 0%, #f0f2ff 100%);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --glass-shadow: 0 8px 32px rgba(108, 92, 231, 0.1);
+      --glass-shadow-light: 0 4px 16px rgba(108, 92, 231, 0.08);
+      --glass-shadow-strong: 0 12px 48px rgba(108, 92, 231, 0.15);
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --xs: 4px;
+      --sm: 8px;
+      --md: 16px;
+      --lg: 24px;
+      --xl: 32px;
+      --font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--background);
+      color: var(--neutral-dark);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* 头部样式 */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow-light);
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--md) var(--lg);
+    }
+
+    .toolbar h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin: 0;
+    }
+
+    .toolbar .right {
+      display: flex;
+      gap: var(--md);
+    }
+
+    .link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: var(--sm) var(--md);
+      border-radius: var(--radius-sm);
+      position: relative;
+    }
+
+    .link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-sm);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .link:hover::before {
+      opacity: 1;
+    }
+
+    .link:hover {
+      background: rgba(108, 92, 231, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* 主容器 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--lg);
+    }
+
+    /* 卡片样式 - 玻璃拟态效果 */
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(0, 206, 201, 0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.5;
+    }
+
+    .card:hover {
+      box-shadow: var(--glass-shadow-strong);
+      transform: translateY(-2px);
+    }
+
+    /* 认证卡片特定样式 */
+    .auth-card { 
+      max-width: 560px; 
+      margin: 40px auto; 
+      padding: 24px; 
+    }
+
+    .tabs { 
+      display: flex; 
+      gap: 8px; 
+      margin-bottom: 18px; 
+    }
+
+    .tabs button { 
+      padding: 8px 14px; 
+      border-radius: var(--radius-sm); 
+      border: 1px solid var(--glass-border); 
+      background: var(--glass-bg); 
+      color: var(--neutral-dark); 
+      cursor: pointer; 
+      font-weight: 500;
+      backdrop-filter: blur(5px);
+      position: relative;
+    }
+
+    .tabs button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-sm);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .tabs button:hover::before {
+      opacity: 0.5;
+    }
+
+    .tabs button:hover {
+      background: rgba(108, 92, 231, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .tabs .active { 
+      background: var(--primary); 
+      color: #fff; 
+      border-color: var(--primary); 
+      position: relative;
+      box-shadow: 0 0 15px rgba(108, 92, 231, 0.5);
+    }
+
+    .tabs .active::before {
+      opacity: 1;
+    }
+
+    form { 
+      animation: fade .2s ease; 
+    }
+
+    @keyframes fade { 
+      from { 
+        opacity:0; 
+        transform:translateY(6px);
+      } 
+      to { 
+        opacity:1; 
+        transform:translateY(0);
+      } 
+    }
+
+    .auth-card .grid { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 14px; 
+    }
+
+    .grid.reg { 
+      grid-template-columns: 1fr 1fr; 
+    }
+
+    .grid.reg .full { 
+      grid-column: 1/3; 
+    }
+
+    label { 
+      font-size: 14px; 
+      color: var(--neutral-dark); 
+      font-weight: 500;
+    }
+
+    label input { 
+      margin-top: 4px; 
+    }
+
+    .actions { 
+      display: flex; 
+      gap: 12px; 
+      justify-content: flex-end; 
+      align-items: center; 
+      margin-top: 12px; 
+    }
+
+    .muted { 
+      color: var(--neutral); 
+      font-size: 12px; 
+    }
+
+    .captcha-row { 
+      display: flex; 
+      gap: 10px; 
+      align-items: center; 
+    }
+
+    .captcha-row img { 
+      height: 44px; 
+      border: 1px solid var(--glass-border); 
+      background: rgba(255, 255, 255, 0.5); 
+      border-radius: var(--radius-sm); 
+      cursor: pointer; 
+      backdrop-filter: blur(5px);
+    }
+
+    .section-title { 
+      font-size: 13px; 
+      font-weight: 600; 
+      color: var(--primary-dark); 
+      margin: 4px 0 10px; 
+      letter-spacing: .4px; 
+    }
+
+    .panel { 
+      background: var(--glass-bg); 
+      padding: 16px; 
+      border: 1px solid var(--glass-border); 
+      border-radius: var(--radius); 
+      backdrop-filter: blur(5px);
+      position: relative;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(0, 206, 201, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.5;
+    }
+
+    /* 输入框样式 */
+    .input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      font-size: 14px;
+      color: var(--neutral-dark);
+      position: relative;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
+    }
+
+    /* 按钮样式 */
+    .btn-primary { 
+      background: var(--primary); 
+      color: #fff; 
+      border: 1px solid var(--primary); 
+      padding: 10px 18px; 
+      border-radius: var(--radius-sm); 
+      cursor: pointer; 
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-sm);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    .btn-primary:hover::after {
+      opacity: 1;
+    }
+
+    .btn-primary:hover { 
+      background: var(--primary-light); 
+      border-color: var(--primary-light); 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+    }
+
+    .btn-secondary { 
+      background: var(--glass-bg); 
+      color: var(--neutral-dark); 
+      border: 1px solid var(--glass-border); 
+      padding: 8px 14px; 
+      border-radius: var(--radius-sm); 
+      cursor: pointer; 
+      font-weight: 500;
+      backdrop-filter: blur(5px);
+      position: relative;
+    }
+
+    .btn-secondary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-sm);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-secondary:hover::before {
+      opacity: 0.7;
+    }
+
+    .btn-secondary:hover { 
+      background: rgba(108, 92, 231, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .split-actions { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      gap: 12px; 
+    }
+
+    .input-row { 
+      position: relative; 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+    }
+
+    .input-row .toggle { 
+      position: absolute; 
+      right: 8px; 
+      top: 50%; 
+      transform: translateY(-50%); 
+      font-size: 12px; 
+      padding: 4px 6px; 
+    }
+
+    .strength { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+    }
+
+    .progress { 
+      height: 8px; 
+      background: rgba(255, 255, 255, 0.5); 
+      border-radius: 999px; 
+      overflow: hidden; 
+      flex: 1; 
+      backdrop-filter: blur(5px);
+    }
+
+    .progress > span { 
+      display: block; 
+      height: 100%; 
+      width: 0%; 
+      background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981); 
+      transition: width .2s ease; 
+    }
+
+    /* Toast 通知 */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: var(--md) var(--lg);
+      box-shadow: var(--glass-shadow);
+      color: var(--neutral-dark);
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    #toast::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.3;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* 隐藏类 */
+    .hidden {
+      display: none;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1200px) {
+      .container {
+        padding: var(--md);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .toolbar {
+        flex-direction: column;
+        gap: var(--sm);
+        padding: var(--sm) var(--md);
+      }
+      
+      .toolbar .right {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .container {
+        padding: var(--sm);
+      }
+      
+      .auth-card {
+        margin: 20px auto;
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .grid.reg { 
+        grid-template-columns: 1fr; 
+      }
+      .grid.reg .full { 
+        grid-column: auto; 
+      }
+      .captcha-row { 
+        flex-wrap: wrap; 
+      }
+      .tabs {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container toolbar">
+      <div class="left">
+        <h1 style="margin:0">登录 / 注册</h1>
+      </div>
+      <div class="right">
+        <a class="link" href="/">返回前台</a>
+        <a class="link" href="/admin/">后台</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card auth-card">
+      <div class="tabs">
+        <button id="tab-login" class="active">登录</button>
+        <button id="tab-code">邮箱验证码注册</button>
+      </div>
+
+      <!-- 登录 -->
+      <form id="form-login">
+        <div class="panel">
+          <div class="section-title">账户登录</div>
+          <div class="grid">
+            <label class="full">用户名
+              <input id="login-username" class="input" autocomplete="username" placeholder="输入用户名">
+            </label>
+            <label class="full">密码
+              <div class="input-row">
+                <input id="login-password" type="password" class="input" autocomplete="current-password" placeholder="输入密码" style="width:100%">
+                <button type="button" id="btn-toggle-login-pwd" class="btn-secondary toggle">显示</button>
+              </div>
+            </label>
+            <div class="captcha-row full">
+              <img id="login-captcha-img" alt="验证码" title="点击刷新" />
+              <button type="button" id="btn-login-refresh-captcha" class="btn-secondary">刷新</button>
+              <label style="flex:1">图形验证码
+                <input id="login-captcha-code" class="input" autocomplete="off" maxlength="6" placeholder="图片字符">
+              </label>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" id="btn-login" class="btn-primary">登录</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- 注册（邮箱验证码） -->
+      <form id="form-code" class="hidden">
+        <div class="panel">
+          <div class="section-title">注册信息</div>
+          <div class="grid reg">
+            <label class="full">邮箱
+              <input id="code-email" type="email" class="input" placeholder="用于接收邮箱验证码">
+            </label>
+            <div class="captcha-row full">
+              <img id="captcha-img" alt="验证码" title="点击刷新" />
+              <button type="button" id="btn-refresh-captcha" class="btn-secondary">刷新</button>
+              <label style="flex:1">图形验证码
+                <input id="captcha-code" class="input" autocomplete="off" maxlength="6" placeholder="图片字符">
+              </label>
+            </div>
+            <div class="split-actions full">
+              <button type="button" id="btn-send-code" class="btn-secondary">发送邮箱验证码</button>
+              <span class="muted" id="send-hint"></span>
+            </div>
+            <label class="full">邮箱验证码
+              <input id="code-code" class="input" maxlength="6" placeholder="6位数字">
+            </label>
+            <label>用户名
+              <input id="code-username" class="input" placeholder="登录使用">
+            </label>
+            <label>密码
+              <div class="input-row">
+                <input id="code-password" type="password" class="input" placeholder="至少 6 位" style="width:100%">
+                <button type="button" id="btn-toggle-reg-pwd" class="btn-secondary toggle">显示</button>
+              </div>
+              <div class="strength muted" style="margin-top:6px">
+                <div class="progress"><span id="pwd-strength-bar"></span></div>
+                <span id="pwd-strength-text">强度：弱</span>
+              </div>
+            </label>
+          </div>
+          <div class="actions">
+            <button type="button" id="btn-register-code" class="btn-primary">验证并注册</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+  <script type="module" src="/auth/app.js"></script>
+</body>
+</html>

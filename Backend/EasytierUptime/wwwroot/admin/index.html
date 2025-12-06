@@ -1,0 +1,696 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理 - EasyTier Uptime</title>
+  <style>
+    /* CSS变量定义 */
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #7e6ff0;
+      --primary-dark: #5a4bd4;
+      --accent: #00cec9;
+      --accent-light: #00e5df;
+      --accent-dark: #00b5b0;
+      --text: #2d3436;
+      --text-light: #636e72;
+      --text-lighter: #b2bec3;
+      --bg: #f9f7fe;
+      --bg-light: rgba(255, 255, 255, 0.7);
+      --bg-lighter: rgba(255, 255, 255, 0.9);
+      --shadow: 0 8px 32px rgba(108, 92, 231, 0.1);
+      --shadow-light: 0 4px 16px rgba(108, 92, 231, 0.08);
+      --shadow-strong: 0 12px 48px rgba(108, 92, 231, 0.15);
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+      --border-radius-lg: 16px;
+      --transition: all 0.3s ease;
+      --blur: blur(10px);
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --content-max: 1100px; /* 新增内容最大宽度 */
+    }
+
+    /* 全局样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* 基础样式 */
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #f5f7ff 0%, #f0f2ff 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    /* 玻璃拟态背景层 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.05) 0%, rgba(0, 206, 201, 0.05) 100%);
+      z-index: -1;
+    }
+
+    /* 容器样式 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* 头部区域 - 玻璃拟态效果 */
+    header {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) 0;
+    }
+
+    .toolbar .left,
+    .toolbar .right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    h1, h2, h3 {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+    }
+
+    /* 主要内容区域 - 磨砂玻璃效果 */
+    main {
+      padding: var(--space-xl) 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    } /* 居中主区域 */
+
+    .card {
+      background: var(--bg-light);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: var(--space-lg);
+      margin: 0 auto var(--space-xl);
+      transition: var(--transition);
+      width: 100%;
+      max-width: var(--content-max);
+    } /* 卡片居中、限制最大宽度 */
+
+    .card:hover {
+      box-shadow: var(--shadow-strong);
+      transform: translateY(-2px);
+    }
+
+    /* 网格布局 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .span-2 {
+      grid-column: span 2;
+    }
+
+    /* 标签和表单元素 */
+    label {
+      display: block;
+      margin-bottom: var(--space-sm);
+      font-weight: 500;
+    }
+
+    .req-star {
+      color: #e74c3c;
+      margin-left: 4px;
+      font-weight: 600;
+    }
+
+    .input, .select, textarea {
+      width: 100%;
+      padding: var(--space-md);
+      border: none;
+      border-radius: var(--border-radius);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05);
+      font-size: 1rem;
+      transition: var(--transition);
+      margin-top: var(--space-xs);
+    }
+
+    .input:focus, .select:focus, textarea:focus {
+      outline: none;
+      box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.05), 0 0 0 2px var(--primary-light);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* 新增: 未填报错样式 */
+    .input.invalid, .select.invalid, textarea.invalid {
+      outline: 2px solid #e74c3c;
+      background: rgba(231, 76, 60, 0.08);
+    }
+
+    /* 按钮样式 */
+    button, .link {
+      padding: var(--space-sm) var(--space-md);
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      box-shadow: var(--shadow-light);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    button.ghost:hover {
+      background: rgba(108, 92, 231, 0.1);
+    }
+
+    /* 提交按钮禁用时视觉提示（仍可点击显示错误） */
+    .btn-disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .btn-disabled:hover::after {
+      content: '请补全必填字段';
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      background: #fff;
+      color: #e74c3c;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-light);
+      white-space: nowrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: var(--space-md);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* 表格样式 */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--border-radius);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-light);
+    }
+
+    .table th {
+      background: rgba(108, 92, 231, 0.1);
+      padding: var(--space-md);
+      text-align: left;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid rgba(108, 92, 231, 0.1);
+    }
+
+    .table tbody tr {
+      transition: var(--transition);
+    }
+
+    .table tbody tr:hover {
+      background: rgba(108, 92, 231, 0.08); /* 加强背景 */
+      box-shadow: inset 0 0 0 999px rgba(108, 92, 231, 0.02);
+    }
+
+    /* 最近健康记录表格居中 */
+    #health-table th, #health-table td {
+      text-align: center;
+    }
+
+    /* 徽章和状态指示器 */
+    .badge {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .badge.small {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+    }
+
+    /* 分段控件 */
+    .seg {
+      display: flex;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: 1px solid var(--primary);
+      width: fit-content;
+    }
+
+    .seg button {
+      background: transparent;
+      color: var(--primary);
+      border-radius: 0;
+      margin: 0;
+      box-shadow: none;
+    }
+
+    .seg button.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* 隐藏类 */
+    .hidden {
+      display: none !important;
+    }
+
+    /* 小文本和静默文本 */
+    .small {
+      font-size: 0.85rem;
+    }
+
+    .muted {
+      color: var(--text-light);
+    }
+
+    /* 页脚 */
+    footer {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      padding: var(--space-md) 0;
+      margin-top: var(--space-xl);
+    }
+
+    /* 加载动画 */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 1200px) {
+      .container {
+        max-width: 100%;
+        padding: 0 var(--space-lg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .span-2 {
+        grid-column: span 1;
+      }
+      
+      .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+      }
+      
+      .toolbar .right {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .actions button {
+        width: 100%;
+      }
+      
+      .card {
+        max-width: 100%; /* 小屏占满 */
+      }
+      
+      .table th:nth-child(5),
+      .table td:nth-child(5),
+      .table th:nth-child(6),
+      .table td:nth-child(6) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --space-lg: 16px;
+        --space-xl: 24px;
+      }
+      
+      .card {
+        padding: var(--space-md);
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      .table th:nth-child(1),
+      .table td:nth-child(1),
+      .table th:nth-child(4),
+      .table td:nth-child(4) {
+        display: none;
+      }
+    }
+
+    /* 特殊状态样式 */
+    #health-indicator {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+    }
+
+    /* 结果区域 */
+    .result {
+      padding: var(--space-md);
+      border-radius: var(--border-radius);
+      margin-top: var(--space-md);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow-light);
+    }
+
+    /* 复选框样式 */
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    /* KPI指标样式 */
+    .kpis {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .kpis > div {
+      flex: 1;
+      min-width: 150px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: var(--space-md);
+      border-radius: var(--border-radius);
+      text-align: center;
+      box-shadow: var(--shadow-light);
+    }
+
+    /* 数字列对齐 */
+    .num {
+      text-align: right;
+    }
+
+    /* 细节展开样式 */
+    details {
+      margin-top: var(--space-sm);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: var(--space-sm) 0;
+    }
+
+    /* Toast通知 */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--primary);
+      color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-strong);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #toast.bad {
+      background: #e74c3c;
+    }
+
+    #toast.warn {
+      background: #fdcb6e;
+      color: #2d3436;
+    }
+
+    #toast.ok {
+      background: #00b894;
+    }
+
+    /* 状态指示器 */
+    .status-online {
+      background: linear-gradient(135deg, #00b894, #55efc4);
+      color: white;
+    }
+    
+    .status-offline {
+      background: linear-gradient(135deg, #d63031, #ff7675);
+      color: white;
+    }
+    
+    .status-warning {
+      background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+      color: #2d3436;
+    }
+    
+    .tag-group {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      background: rgba(108, 92, 231, 0.1);
+      color: var(--primary);
+    }
+    
+    .approved {
+      color: #00b894;
+    }
+    
+    .pending {
+      color: #fdcb6e;
+    }
+    
+    .rejected {
+      color: #e17055;
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <header>
+    <div class="container toolbar">
+      <div class="left">
+        <h1 style="margin:0">后台管理</h1>
+        <span id="health-indicator" class="badge small">API: <span id="api-health">checking...</span></span>
+      </div>
+      <div class="right" id="auth-box">
+        <div id="login-info" class="hidden">
+          <span>已登录：<b id="login-name"></b>（<span id="login-role"></span>）</span>
+          <a href="/admin/users.html" id="lnk-users" class="link">用户管理</a>
+          <button id="btn-logout" class="ghost">退出</button>
+        </div>
+        <a href="/auth/" id="login-link" class="link">登录 / 注册</a>
+        <a href="/" class="link">返回前台</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="toolbar">
+        <h2 style="margin:0">添加 / 测试节点</h2>
+        <div class="right small muted">发布前先测试连通性</div>
+      </div>
+      <form id="node-form">
+        <div class="grid">
+          <label>名称<span class="req-star">*</span>
+            <input type="text" id="name" class="input" placeholder="例如: my-node" required>
+            <div class="small muted">建议 2-64 个字符，便于识别</div>
+          </label>
+          <label>协议
+            <select id="protocol" class="select">
+              <option value="tcp">tcp</option>
+              <option value="udp">udp</option>
+            </select>
+            <div class="small muted">选择连接协议</div>
+          </label>
+          <label>主机<span class="req-star">*</span>
+            <input type="text" id="host" class="input" placeholder="host 或 host:port" required>
+            <div class="small muted">支持直接输入 host:port，自动拆分端口</div>
+          </label>
+          <label>端口<span class="req-star">*</span>
+            <input type="number" id="port" class="input" min="1" max="65535" value="11010" required>
+            <div class="small muted">tcp 默认 11010；udp 请根据实际填写</div>
+          </label>
+          <label>network_name<span class="req-star">*</span>
+            <input type="text" id="network_name" class="input" placeholder="网络名称" required>
+          </label>
+          <label>network_secret<span class="req-star">*</span>
+            <input type="text" id="network_secret" class="input" placeholder="网络密钥" required>
+          </label>
+          <label>最大连接
+            <input type="number" id="max_connections" class="input" min="0" value="0">
+            <div class="small muted">0 表示未知或不限制</div>
+          </label>
+          <label>公开范围
+            <div class="seg" id="seg-visibility">
+              <button type="button" id="seg-private" class="active">私有</button>
+              <button type="button" id="seg-public">公开</button>
+            </div>
+            <input type="checkbox" id="is_public" class="hidden" />
+            <div class="small muted">公开表示在前台列表中展示</div>
+          </label>
+          <label class="span-2">描述
+            <textarea id="description" class="input" rows="2" placeholder="可选，例如地区/带宽/说明"></textarea>
+          </label>
+          <label class="span-2">高级选项
+            <details>
+              <summary class="small">展开/收起</summary>
+              <div style="margin-top:6px;display:flex;gap:16px;align-items:center">
+                <label class="checkbox"><input type="checkbox" id="allow_relay"> 允许中继</label>
+                <span class="small muted">仅在确有需要时开启</span>
+              </div>
+            </details>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="button" id="btn-add" class="btn-disabled">添加节点</button>
+          <button type="button" id="btn-test" class="ghost">测试连通性</button>
+          <button type="button" id="btn-reset" class="ghost">清空</button>
+          <span id="op-msg" class="small muted"></span>
+        </div>
+      </form>
+      <div id="test-result" class="result hidden"></div>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <h2 style="margin:0">节点列表</h2>
+        <div id="auth-hint" class="small muted hidden">需要登录后查看和管理节点，<a href="/auth/">去登录</a></div>
+      </div>
+      <div class="table-wrap">
+        <table id="nodes-table" class="table">
+          <thead><tr><th>ID</th><th>名称</th><th>地址</th><th>协议</th><th>版本</th><th class="num">当前连接</th><th>审批</th><th>状态</th><th>公开</th><th>操作</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card hidden" id="node-details">
+      <h2>节点详情 <span id="detail-title"></span></h2>
+      <div id="stats" class="kpis" style="margin-bottom:10px"></div>
+      <h3>最近健康记录</h3>
+      <div class="table-wrap">
+        <table id="health-table" class="table">
+          <thead><tr><th>时间</th><th>状态</th><th>连接数</th><th>响应(ms)</th><th>错误</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer><div class="container"><small>EasyTier Uptime Dashboard</small></div></footer>
+  <div id="toast"></div>
+  <script src="/admin/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公开节点 - EasyTier Uptime</title>
+  <style>
+    /* 来自管理页的设计系统与风格（适配前台） */
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #7e6ff0;
+      --primary-dark: #5a4bd4;
+      --accent: #00cec9;
+      --accent-light: #00e5df;
+      --accent-dark: #00b5b0;
+      --text: #2d3436;
+      --text-light: #636e72;
+      --text-lighter: #b2bec3;
+      --bg: #f5f7ff;
+      --bg-light: rgba(255, 255, 255, 0.7);
+      --bg-lighter: rgba(255, 255, 255, 0.9);
+      --shadow: 0 8px 32px rgba(108, 92, 231, 0.1);
+      --shadow-light: 0 4px 16px rgba(108, 92, 231, 0.08);
+      --shadow-strong: 0 12px 48px rgba(108, 92, 231, 0.15);
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+      --border-radius-lg: 16px;
+      --transition: all 0.3s ease;
+      --blur: blur(10px);
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --content-max: 1100px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(135deg, #f5f7ff 0%, #f0f2ff 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 0;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    body::before { content: ''; position: fixed; inset: 0; background: linear-gradient(135deg, rgba(108, 92, 231, 0.05) 0%, rgba(0, 206, 201, 0.05) 100%); z-index: -1; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-md); }
+
+    header { background: rgba(255, 255, 255, 0.25); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-bottom: 1px solid rgba(255, 255, 255, 0.3); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; padding: var(--space-md) 0; }
+    .toolbar .left, .toolbar .right { display: flex; align-items: center; gap: var(--space-md); }
+
+    h1, h2 { color: var(--primary); font-weight: 600; }
+    h1 { font-size: 1.8rem; }
+
+    main { padding: var(--space-xl) 0; display: flex; flex-direction: column; align-items: center; }
+
+    .card { background: var(--bg-light); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-radius: var(--border-radius-lg); box-shadow: var(--shadow); border: 1px solid rgba(255, 255, 255, 0.3); padding: var(--space-lg); margin: 0 auto var(--space-xl); transition: var(--transition); width: 100%; max-width: var(--content-max); }
+    .card:hover { box-shadow: var(--shadow-strong); transform: translateY(-2px); }
+
+    /* 徽章、链接、KPI */
+    .badge { display: inline-block; padding: var(--space-xs) var(--space-sm); border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+    .badge.small { font-size: 0.7rem; padding: 2px 8px; }
+    .badge.status-healthy { background: linear-gradient(135deg, #10b981, #34d399); color: white; }
+    .badge.status-unhealthy { background: linear-gradient(135deg, #ef4444, #f87171); color: white; }
+    .badge.status-unknown { background: linear-gradient(135deg, #64748b, #94a3b8); color: white; }
+
+    .link { color: var(--primary); background: transparent; text-decoration: none; padding: var(--space-sm) var(--space-md); border-radius: var(--border-radius); transition: var(--transition); display: inline-block; }
+    .link:hover { color: var(--primary-dark); text-decoration: underline; }
+
+    .kpis { display: flex; gap: var(--space-md); flex-wrap: wrap; justify-content: center; }
+    .kpis > .kpi { flex: 1; min-width: 150px; background: rgba(255, 255, 255, 0.7); padding: var(--space-md); border-radius: var(--border-radius); text-align: center; box-shadow: var(--shadow-light); }
+    .small { font-size: 0.85rem; }
+    .muted { color: var(--text-light); }
+
+    /* 公告 */
+    .notice { background: rgba(255,255,255,0.7); border: 1px solid rgba(108, 92, 231, 0.15); padding: 12px 16px; border-radius: 10px; display: flex; gap: 12px; align-items: flex-start; font-size: 13px; line-height: 1.5; box-shadow: var(--shadow-light); }
+    .notice b { color: var(--primary); }
+
+    /* 卡片列表 */
+    .cards-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+    .card-item { background: rgba(255,255,255,0.7); border: 1px solid rgba(108, 92, 231, 0.15); border-radius: var(--border-radius); padding: var(--space-md); box-shadow: var(--shadow-light); transition: var(--transition); }
+    .card-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card-item .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .card-item .title { font-weight: 600; color: var(--primary); }
+    .card-item .card-desc { margin-top: 6px; color: var(--text); }
+    .card-item .card-actions { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag-group, .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; background: rgba(108, 92, 231, 0.1); color: var(--primary); }
+
+    /* 新增：卡片多行信息样式 */
+    .card-lines { display: block; margin-top: 6px; }
+    .card-lines .line { display: block; margin: 2px 0; color: var(--text-light); }
+
+    /* 新增：贴合全站的按钮风格（用于“详情”） */
+    .btn { padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(108, 92, 231, 0.35); background: rgba(255,255,255,0.9); color: var(--primary); cursor: pointer; transition: var(--transition); font-size: .85rem; }
+    .btn:hover { background: var(--primary); color: #fff; box-shadow: var(--shadow-light); }
+    .btn:active { transform: translateY(0); }
+
+    /* 分页 */
+    #pagination { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 10px; }
+    #pagination .pg-btn { padding: 6px 10px; border: 1px solid rgba(108, 92, 231, 0.3); background: white; border-radius: 8px; cursor: pointer; }
+    #pagination .pg-btn[disabled] { opacity: .5; cursor: not-allowed; }
+    #pagination .pg-info { color: var(--text-light); font-size: 12px; }
+
+    /* 实用类 */
+    .hidden { display: none !important; }
+
+    footer { background: rgba(255, 255, 255, 0.25); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border-top: 1px solid rgba(255, 255, 255, 0.3); padding: var(--space-md) 0; margin-top: var(--space-xl); }
+
+    @media (max-width: 768px) { .toolbar { flex-direction: column; align-items: flex-start; gap: var(--space-md); } .toolbar .right { width: 100%; justify-content: space-between; } .card { max-width: 100%; } }
+    @media (max-width: 480px) { :root { --space-lg: 16px; --space-xl: 24px; } .card { padding: var(--space-md); } h1 { font-size: 1.5rem; } }
+  </style>
+</head>
+<body class="public-page">
+  <header>
+    <div class="container toolbar">
+      <div class="left">
+        <h1 style="margin:0">公开节点</h1>
+        <span class="badge small">只展示已审批+公开</span>
+        <small id="last-updated" class="muted" style="margin-left:8px"></small>
+      </div>
+      <div class="right" id="auth-box">
+        <div id="login-info" class="hidden">
+          <span>已登录：<b id="login-name"></b>（<span id="login-role"></span>）</span>
+          <button id="btn-logout" class="link" type="button">退出</button>
+        </div>
+        <a href="/auth/" id="login-link" class="link">登录 / 注册</a>
+        <a href="/admin/" class="link">后台管理</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container public-main">
+    <section class="card" style="margin-top:8px">
+      <div class="notice" role="alert">
+        <b>提示：</b>
+        本站仅用于 <b>检测与展示节点活性/负载</b>，并不公开真实服务器地址与接入信息。列表中的“地址”已做隐藏处理（host 字段被脱敏），请勿将其视为可直接连接的资源。
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="kpis center" id="kpis">
+        <div class="kpi"><div class="small">节点数</div><div id="kpi-count" style="font-weight:700">-</div></div>
+        <div class="kpi"><div class="small">总连接</div><div id="kpi-conns" style="font-weight:700">-</div></div>
+        <div class="kpi"><div class="small">启用率</div><div id="kpi-health" style="font-weight:700">-</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div id="cards" class="cards-list"></div>
+      <div id="pagination"></div>
+    </section>
+  </main>
+  
+  <footer>
+    <div class="container"><small>EasyTier Uptime</small></div>
+  </footer>
+
+  <div id="toast"></div>
+  <script>window.PUBLIC_JS_BUILD=Date.now()</script>
+  <script type="module" src="/public.js?v=10"></script>
+</body>
+</html>

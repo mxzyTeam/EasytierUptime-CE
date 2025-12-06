@@ -1,0 +1,113 @@
+﻿# Ignore sensitive configuration files
+EasytierUptime/appsettings.json
+EasytierUptime_Detection/appsettings.json
+EasytierUptime_Entities/appsettings.json
+**/easytier_ffi.dll
+**/easytier_ffi.dll.exp
+**/easytier_ffi.dll.lib
+**/easytier_ffi.pdb
+**/easytier_ffi.so
+
+# Optional: ignore all environment-specific appsettings
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.Private.json
+
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+
+# .NET tooling
+project.lock.json
+project.fragment.lock.json
+artifacts/
+.nuget/
+packages/
+*.snupkg
+*.nupkg
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+*.dbmdl
+*.jfm
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Logs
+**/*.log
+
+# Resharper / cache
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# NuGet packages (if using packages folder)
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Azure
+[Aa]zure*/
+.localhistory/
+
+# Security / secrets
+secrets.json
+**/*.pfx
+**/*.p12
+
+# OS-specific
+# Windows
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+# Linux
+*~
+
+# Containers
+**/.dockerignore
+**/Dockerfile.*.temp
+
+# Coverage tools
+coverage/
+.coverage
+lcov.info
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Generated SQL backups or dumps
+*.sql~
+*.bak.sql
