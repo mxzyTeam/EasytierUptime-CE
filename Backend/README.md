@@ -13,7 +13,6 @@
 3. 将库文件复制到运行目录下。
 
 ## 功能概览
-- 节点在线状态探测（支持 `easytier_native` 模式）
 - 定时调度与结果聚合
 - 基于 JWT 的身份认证与授权
 - 邮件通知（SMTP）
@@ -55,7 +54,4 @@
   - MySql 适合正式环境
 - 如使用 Sqlite，可将连接串留空并让程序在 `./data/detection.db` 自动创建（视实现而定）。
 
-## 安全与提交
-- `.gitignore` 已忽略真实配置文件 `appsettings.json`
-- 如果曾误提交敏感信息，请使用 `git filter-repo` 清理历史并强制推送
 
