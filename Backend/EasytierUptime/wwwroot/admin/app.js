@@ -28,6 +28,34 @@ function toast(msg, cls='') { const box = qs('toast'); if(!box) return; box.text
 function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function formatLocalTime(v){ if(!v) return ''; const str = String(v); const noTz = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2}(?:\.\d{1,7})?)$/; let d; if (noTz.test(str)) { const iso = str.replace(' ', 'T') + 'Z'; d = new Date(iso); } else { d = new Date(str); } return isNaN(d) ? str : d.toLocaleString(); }
 
+// 简易加载遮罩
+function ensureLoadingStyles(){
+  if (document.getElementById('loading-overlay-style')) return;
+  const style = document.createElement('style');
+  style.id = 'loading-overlay-style';
+  style.textContent = `
+  #loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+  #loading-overlay .box { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display:flex; align-items:center; gap:10px; }
+  #loading-overlay .loading { display:inline-block; width:20px; height:20px; border: 2px solid rgba(0,0,0,0.2); border-radius:50%; border-top-color: #6c5ce7; animation: spin 1s linear infinite; }
+  @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+  `;
+  document.head.appendChild(style);
+}
+function showLoading(text='处理中...'){
+  ensureLoadingStyles();
+  let overlay = document.getElementById('loading-overlay');
+  if (!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'loading-overlay';
+    overlay.innerHTML = `<div class="box"><span class="loading"></span><span>${esc(text)}</span></div>`;
+    document.body.appendChild(overlay);
+  } else {
+    overlay.querySelector('.box span:last-child').textContent = text;
+    overlay.style.display = 'flex';
+  }
+}
+function hideLoading(){ const overlay = document.getElementById('loading-overlay'); if(overlay) overlay.style.display='none'; }
+
 function parseHostPort(){ const hostInput = qs('host'); const portInput = qs('port'); const v = hostInput.value.trim(); const idx = v.lastIndexOf(':'); if (idx > 0 && idx === v.indexOf(':')) { const h = v.slice(0, idx); const p = Number(v.slice(idx+1)); if (h && Number.isFinite(p) && p>0 && p<=65535){ hostInput.value = h; portInput.value = String(p); } } }
 function formValid(){ const name = qs('name').value.trim(); const host = qs('host').value.trim(); const port = Number(qs('port').value); const nn = qs('network_name').value.trim(); const ns = qs('network_secret').value.trim(); return !!(name && host && nn && ns && Number.isFinite(port) && port>=1 && port<=65535); }
 function updateAddButton(){ const btn = qs('btn-add'); if(!btn) return; const valid = formValid(); btn.disabled = !valid; btn.classList.toggle('btn-disabled', !valid); if(valid){ highlightInvalid(false); } }
@@ -101,7 +129,26 @@ function bindTableActions(){ const table = document.querySelector('#nodes-table'
 function showNodeDetails(id, stats, records){ const detail = qs('node-details'); if(!detail) return; show(detail); const node = (window.__nodes_cache||[]).find(n=>n.id===id); qs('detail-title').textContent = `#${id} ${node?node.name:''}`; const statsBox = qs('stats'); statsBox.innerHTML = ''; const avgRespMs = (stats.average_response_time||0)/1000.0; const kpiData = [ { label:'总检查次数', value: stats.total_checks }, { label:'健康次数', value: stats.healthy_count }, { label:'不健康次数', value: stats.unhealthy_count }, { label:'健康率(%)', value: (stats.health_percentage||0).toFixed(2) }, { label:'平均响应(ms)', value: avgRespMs.toFixed(1) } ]; for(const k of kpiData){ const div=document.createElement('div'); div.innerHTML = `<div style="font-size:1.4rem;font-weight:600">${esc(k.value)}</div><div class="small muted">${esc(k.label)}</div>`; statsBox.appendChild(div); } const tbody = qs('health-table').querySelector('tbody'); tbody.innerHTML=''; records.forEach(r=>{ const tr=document.createElement('tr'); const statusCls = r.status==='Healthy' ? 'status-online' : 'status-offline'; const rtMs = r.response_time_ms ?? r.response_time ?? r.ResponseTime; const conn = r.connection_count ?? r.ConnectionCount ?? ''; tr.innerHTML = `<td>${formatLocalTime(r.checked_at)||formatLocalTime(r.CheckedAt)}</td><td><span class="badge ${statusCls}">${esc(r.status||r.Status)}</span></td><td class="num">${esc(conn)}</td><td class="num">${esc(rtMs)}</td><td>${esc(r.error_message??r.ErrorMessage)}</td>`; tbody.appendChild(tr); }); if(records.length===0){ const tr=document.createElement('tr'); tr.innerHTML = '<td colspan="5" class="muted">暂无记录</td>'; tbody.appendChild(tr); }
 }
 
-async function testConnection(){ parseHostPort(); if(!formValid()){ highlightInvalid(true); toast('请先填写必要字段','error'); return; } const payload = { name: qs('name').value.trim(), protocol: qs('protocol').value, host: qs('host').value.trim(), port: Number(qs('port').value), network_name: qs('network_name').value.trim(), network_secret: qs('network_secret').value.trim(), max_connections: Number(qs('max_connections').value||0), allow_relay: qs('allow_relay').checked, is_public: qs('is_public').checked, description: qs('description').value.trim() }; try{ const res = await api('/api/test_connection', { method:'POST', body: JSON.stringify(payload) }); const box = qs('test-result'); box.classList.remove('hidden'); box.innerHTML = `<div><b>状态:</b> ${esc(res.status)} | <b>响应(us):</b> ${esc(res.response_time)} | <b>版本:</b> ${esc(res.version||'')}</div><div><b>当前连接:</b> ${esc(res.conn_count)} ${res.error_message?('| <b>错误:</b> '+esc(res.error_message)):''}</div>`; }catch(err){ toast(err.message||err,'error'); }}
+async function testConnection(){
+  parseHostPort();
+  if(!formValid()){ highlightInvalid(true); toast('请先填写必要字段','error'); return; }
+  const payload = { name: qs('name').value.trim(), protocol: qs('protocol').value, host: qs('host').value.trim(), port: Number(qs('port').value), network_name: qs('network_name').value.trim(), network_secret: qs('network_secret').value.trim(), max_connections: Number(qs('max_connections').value||0), allow_relay: qs('allow_relay').checked, is_public: qs('is_public').checked, description: qs('description').value.trim() };
+  const btn = qs('btn-test');
+  try{
+    if (btn){ btn.disabled = true; btn.innerHTML = '<span class="loading" style="vertical-align:middle"></span> 测试中...'; }
+    showLoading('正在测试连通性，请稍候...');
+    const res = await api('/api/test_connection', { method:'POST', body: JSON.stringify(payload) });
+    const box = qs('test-result');
+    box.classList.remove('hidden');
+    box.innerHTML = `<div><b>状态:</b> ${esc(res.status)} | <b>响应(us):</b> ${esc(res.response_time)} | <b>版本:</b> ${esc(res.version||'')}</div><div><b>当前连接:</b> ${esc(res.conn_count)} ${res.error_message?('| <b>错误:</b> '+esc(res.error_message)):''}</div>`;
+    toast('测试完成','ok');
+  }catch(err){
+    toast(err.message||err,'error');
+  }finally{
+    hideLoading();
+    if (btn){ btn.disabled = false; btn.textContent = '测试连通性'; }
+  }
+}
 
 function resetForm(){ qs('node-form').reset(); qs('port').value='11010'; qs('test-result').classList.add('hidden'); qs('test-result').textContent=''; updateAddButton(); setSeg(false); highlightInvalid(false); if(editingId) cancelEdit(); }
 
