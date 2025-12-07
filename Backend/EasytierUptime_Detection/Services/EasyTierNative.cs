@@ -86,12 +86,13 @@ internal static class EasyTierNative
 
     // 构造 EasyTier 的 TOML 配置文本。
     // 含：实例名、实例 ID、网络标识（名称/密钥）、对端 URI、标志位（禁用 TUN/P2P/打洞）。
-    private static string BuildTomlConfig(SharedNode node, Guid? id = null)
+    private static (string toml,string instancename) BuildTomlConfig(SharedNode node, Guid? id = null)
     {
         var guid = (id ?? Guid.NewGuid()).ToString();
         var instanceName = string.IsNullOrWhiteSpace(node.Name) ? $"healthcheck-{guid}" : node.Name;
+        instanceName = instanceName + node.Id;
         var sb = new StringBuilder();
-        sb.AppendLine($"instance_name = \"{instanceName + node.Id}\"");
+        sb.AppendLine($"instance_name = \"{instanceName}\"");
         sb.AppendLine($"instance_id = \"{guid}\"");
         sb.AppendLine("[network_identity]");
         sb.AppendLine($"network_name = \"{node.NetworkName}\"\nnetwork_secret = \"{node.NetworkSecret}\"\n");
@@ -101,11 +102,11 @@ internal static class EasyTierNative
         sb.AppendLine("no_tun = true");
         sb.AppendLine("disable_p2p = true");
         sb.AppendLine("disable_udp_hole_punching = true");
-        return sb.ToString();
+        return (sb.ToString(), instanceName);
     }
 
     // 运行时已启动的实例句柄缓存（按 SharedNode.Id）。避免重复启动。
-    static Dictionary<int,int> nodedic = new Dictionary<int, int>();
+    static Dictionary<string,int> nodedic = new Dictionary<string, int>();
 
     // 对指定节点进行一次探测：
     // - 按需启动实例
@@ -115,15 +116,14 @@ internal static class EasyTierNative
         try
         {
             var toml = BuildTomlConfig(node);
-            if (!nodedic.ContainsKey(node.Id))
+            if (!nodedic.ContainsKey(toml.instancename))
             {
-                int r1 = parse_config(toml);
+                int r1 = parse_config(toml.toml);
                 if (r1 < 0) return (false, null, 0, 0, GetErrorMessage());
-                var r2 = run_network_instance(toml);
+                var r2 = run_network_instance(toml.toml);
                 if (r2 < 0) return (false, null, 0, 0, GetErrorMessage());
-                nodedic[node.Id] = r2;
+                nodedic[toml.instancename] = r2;
             }
-
             var snapshot = ExtractMetrics(CollectAll(), node.NetworkName, $"{node.Protocol}://{node.Host}:{node.Port}");
             // 若解析到错误信息，直接返回（失败优先）。
             if (!string.IsNullOrEmpty(snapshot.error)) return snapshot;
@@ -135,9 +135,71 @@ internal static class EasyTierNative
         catch (Exception ex) { return (false, null, 0, 0, ex.Message); }
     }
 
-    // 使用默认超时的探测重载。
-    public static (bool ok, string? version, int connCount, long latencyUs, string? error) Probe(SharedNode node)
-        => Probe(node, TimeSpan.FromSeconds(2));
+    // 新增：探测后删除（关闭并清理实例）
+    public static (bool ok, string? version, int connCount, long latencyUs, string? error) ProbeAndDispose(SharedNode node)
+    {
+        var instancename = "";
+        try
+        {
+            var toml = BuildTomlConfig(node);
+            instancename = toml.instancename;
+            if (!nodedic.ContainsKey(toml.instancename))
+            {
+                int r1 = parse_config(toml.toml);
+                if (r1 < 0) return (false, null, 0, 0, GetErrorMessage());
+                var r2 = run_network_instance(toml.toml);
+                if (r2 < 0) return (false, null, 0, 0, GetErrorMessage());
+                nodedic[toml.instancename] = r2;
+            }
+            Thread.Sleep(1000 * 10);
+
+            var snapshot = ExtractMetrics(CollectAll(), node.NetworkName, $"{node.Protocol}://{node.Host}:{node.Port}");
+            // 若解析到错误信息，直接返回（失败优先）。
+            if (!string.IsNullOrEmpty(snapshot.error)) return snapshot;
+            // 若存在连接且状态 ok，直接返回。
+            if (snapshot.connCount > 0 && snapshot.ok) return snapshot;
+            return snapshot;
+        }
+        catch (DllNotFoundException e) { return (false, null, 0, 0, $"FFI dll not found: {e.Message}"); }
+        catch (Exception ex) { return (false, null, 0, 0, ex.Message); }
+        finally 
+        {
+            IntPtr namesPtr = IntPtr.Zero;
+            nodedic.Remove(instancename);
+            var instanceNames = nodedic.Keys.ToArray();
+            IntPtr[] namePointers = null;
+            try
+            {
+                if (instanceNames != null && instanceNames.Length > 0)
+                {
+                    namePointers = new IntPtr[instanceNames.Length];
+                    for (int i = 0; i < instanceNames.Length; i++)
+                    {
+                        if (instanceNames[i] == null)
+                            throw new ArgumentException($"instanceNames[{i}] is null");
+
+                        namePointers[i] = Marshal.StringToHGlobalAnsi(instanceNames[i]);
+                    }
+
+                    namesPtr = Marshal.AllocHGlobal(IntPtr.Size * namePointers.Length);
+                    Marshal.Copy(namePointers, 0, namesPtr, namePointers.Length);
+                }
+                else
+                {
+                    namesPtr = IntPtr.Zero;
+                }
+                if (namesPtr == IntPtr.Zero && nodedic.Count >0)
+                    throw new Exception("");
+                int ret = retain_network_instance(namesPtr, instanceNames?.Length ?? 0);
+
+            }
+            catch 
+            {
+
+            }
+        }
+    }
+
 
     // 从 FFI 返回的键值对中提取健康状态：
     // - 顶层快速字段（error_msg/running/version）

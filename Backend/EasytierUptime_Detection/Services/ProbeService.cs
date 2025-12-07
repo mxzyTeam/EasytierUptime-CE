@@ -13,6 +13,10 @@ public class ProbeService
     /// </summary>
     public Task<(string status, long responseTimeUs, string? error, string version, int connCount)> ProbeAsync(SharedNode node, CancellationToken ct) => Task.FromResult(ProbeNative(node));
 
+    /// 执行一次探测，返回状态、响应时间、错误信息、版本、连接数。
+    /// </summary>
+    public Task<(string status, long responseTimeUs, string? error, string version, int connCount)> ProbeAndDispose(SharedNode node, CancellationToken ct) => Task.FromResult(ProbeNativeAndDispose(node));
+
     private static long ElapsedUs(long startTicks, long endTicks)
         => (long)((endTicks - startTicks) * 1_000_000L / Stopwatch.Frequency);
 
@@ -20,6 +24,16 @@ public class ProbeService
     {
         // 使用原生探测，解析版本、连接数和延迟（微秒）
         var (ok, version, conn, latencyUs, err) = EasyTierNative.Probe(node, TimeSpan.FromSeconds(2));
+
+        string status = ok ? "Healthy" : "Unhealthy";
+        string? error = ok ? null : err;
+        var us = latencyUs > 0 ? latencyUs : 0;
+        return (status, us, error, version ?? string.Empty, conn);
+    }
+    private (string, long, string?, string, int) ProbeNativeAndDispose(SharedNode node)
+    {
+        // 使用原生探测，解析版本、连接数和延迟（微秒）
+        var (ok, version, conn, latencyUs, err) = EasyTierNative.ProbeAndDispose(node);
 
         string status = ok ? "Healthy" : "Unhealthy";
         string? error = ok ? null : err;

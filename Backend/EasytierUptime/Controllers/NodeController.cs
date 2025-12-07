@@ -440,7 +440,7 @@ public class NodeController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(node.Host) || node.Port <= 0)
             return Results.BadRequest(new { error = "host/port invalid" });
-        var (status, rtUs, err, version, connCount) = await probeSvc.ProbeAsync(node, ct);
+        var (status, rtUs, err, version, connCount) = await probeSvc.ProbeAndDispose(node, ct);
         return Results.Ok(new { status, response_time = rtUs, error_message = err, version, conn_count = connCount });
     }
 
